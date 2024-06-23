@@ -31,5 +31,41 @@ const newClock = new clock();
 // console.log(newClock.minutes);
 // console.log(newClock.seconds);
 
+//Adding new methods to clock object
+Object.defineProperties(clock.prototype, {
+    getFormattedTime: {
+        value: function() {
+            const formattedHours = this.hours.toString().padStart(2, '0');
+            const formattedMinutes = this.minutes.toString().padStart(2, '0');
+            const formattedSeconds = this.seconds.toString().padStart(2, '0');
+    
+            return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+        },
+        writeable: true,
+        configuration: true,
+        enumerable: false
+    },
+    get12HourTime: {
+        value: function() {
+            let timePeriod = "AM";
+            if(this.hours >= 12){
+                timePeriod = "PM"
+                if(this.hours > 12){
+                    this.hours -= 12;
+                }
+            } else if(this.hours === 0){
+                this.hours = 12;
+            }
+            return timePeriod;
+        },
+        writeable: true,
+        configuration: true,
+        enumerable: false
+    }
+})
 
+// console.log(clock);
+// console.log(newClock.getFormattedTime());
+// console.log(newClock.get12HourTime());
+// console.log(newClock.hours);
 
