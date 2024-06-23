@@ -18,5 +18,18 @@ console.log(myseconds);
 const mydate = date.toLocaleDateString();
 console.log(mydate);
 
+//Object Oriented Clock
+function clock() {
+    this.hours = myhours;
+    this.minutes = myminutes;
+    this.seconds = myseconds;
+}
+
+//Accessing properties of instance newClock
+const newClock = new clock();
+// console.log(newClock.hours);
+// console.log(newClock.minutes);
+// console.log(newClock.seconds);
+
 
 
