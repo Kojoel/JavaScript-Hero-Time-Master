@@ -1,35 +1,32 @@
 const digitalClock = document.querySelector('.digital-clock');
-const hour = document.querySelector('.hour');
-const minutes = document.querySelector('.minutes');
-const seconds = document.querySelector('.seconds');
+const clockhours = document.querySelector('.hour');
+const clockminutes = document.querySelector('.minutes');
+const clockseconds = document.querySelector('.seconds');
+const timeFormat = document.querySelector('.time-format');
 
 // console.log(hour.textContent, minutes.textContent, seconds.textContent);
 
-const date = new Date()
-console.log(date);
+function updateTime(callback){
+    setInterval(() => {
+        const date = new Date();
+        const myhours = date.getHours();
+        const myminutes = date.getMinutes();
+        const myseconds = date.getSeconds();
+        callback(myhours, myminutes, myseconds);
+        // console.log(myhours, myminutes, myseconds);
 
-const myhours = date.getHours();
-const myminutes = date.getMinutes();
-const myseconds = date.getSeconds();
-console.log(myhours);
-console.log(myminutes);
-console.log(myseconds);
-
-const mydate = date.toLocaleDateString();
-console.log(mydate);
+        // return myhours, myminutes, myseconds;        
+    }, 1000);
+}
 
 //Object Oriented Clock
 function clock() {
-    this.hours = myhours;
-    this.minutes = myminutes;
-    this.seconds = myseconds;
+    this.hours = 0;
+    this.minutes = 0;
+    this.seconds = 0;
+    console.log(this.hours, this.minutes, this.seconds);
 }
 
-//Accessing properties of instance newClock
-const newClock = new clock();
-// console.log(newClock.hours);
-// console.log(newClock.minutes);
-// console.log(newClock.seconds);
 
 //Adding new methods to clock object
 Object.defineProperties(clock.prototype, {
@@ -38,7 +35,7 @@ Object.defineProperties(clock.prototype, {
             const formattedHours = this.hours.toString().padStart(2, '0');
             const formattedMinutes = this.minutes.toString().padStart(2, '0');
             const formattedSeconds = this.seconds.toString().padStart(2, '0');
-    
+            console.log(formattedHours);
             return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
         },
         writeable: true,
@@ -61,11 +58,48 @@ Object.defineProperties(clock.prototype, {
         writeable: true,
         configuration: true,
         enumerable: false
+    },
+    update: {
+        value: function(hours, minutes, seconds) {
+            this.hours = hours;
+            this.minutes = minutes;
+            this.seconds = seconds;
+            this.display();
+        },
+        writeable: true,
+        configuration: true,
+        enumerable: false
+    },
+    display: {
+        value: function() {
+            clockhours.textContent = this.hours.toString().padStart(2, '0');
+            clockminutes.textContent = this.minutes.toString().padStart(2, '0');
+            clockseconds.textContent = this.seconds.toString().padStart(2, '0');
+            timeFormat.textContent = this.get12HourTime();
+        }
     }
 })
 
-// console.log(clock);
-// console.log(newClock.getFormattedTime());
-// console.log(newClock.get12HourTime());
-// console.log(newClock.hours);
 
+
+//Accessing properties of instance newClock
+const newClock = new clock();
+console.log(newClock);
+// console.log(newClock.minutes);
+// console.log(newClock.seconds);
+
+
+//updating time every second
+updateTime((hours, minutes, seconds) => {
+    newClock.update(hours, minutes, seconds);
+}); 
+
+
+
+
+
+
+
+
+
+// Adding feature: 12/24 hour format, time zone, colors 
